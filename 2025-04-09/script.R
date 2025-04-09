@@ -3,3 +3,58 @@ tab <- tibble::tibble(
   coluna_2 = c("a", "b", NA, "d", "e"),
   coluna_3 = c("d", "b", "a", "c", NA)
 )
+
+# Filtrando a coluna 1
+
+tab |>
+  dplyr::filter(coluna_1 == 1)
+
+tab |>
+  dplyr::filter(!coluna_1 == 1)
+
+tab |>
+  dplyr::filter(coluna_1 != 1)
+
+# Filtrando a coluna 2
+
+tab |>
+  dplyr::filter(coluna_2 == "a")
+
+tab |>
+  dplyr::filter(!coluna_2 == "a")
+
+tab |>
+  dplyr::filter(coluna_2 != "a" | is.na(coluna_2))
+
+# Filtrando as colunas 2 e 3
+
+tab |>
+  dplyr::filter(coluna_2 == "a" & coluna_3 == "a")
+
+tab |>
+  dplyr::filter(coluna_2 == "a" | coluna_3 == "a")
+
+tab |>
+  dplyr::filter(!(coluna_2 == "a" & coluna_3 == "a"))
+
+tab |>
+  dplyr::filter(
+    (coluna_2 != "a" | is.na(coluna_2)) &
+      (coluna_3 != "a" | is.na(coluna_3))
+  )
+
+tab |>
+  dplyr::filter(
+    !dplyr::if_any(
+      .cols = c(coluna_2, coluna_3),
+      \(x) {
+        ifelse(
+          is.na(x),
+          FALSE,
+          x == "a"
+        )
+      }
+    )
+  )
+
+c(TRUE, FALSE, TRUE, FALSE, NA)
